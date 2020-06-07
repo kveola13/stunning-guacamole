@@ -28,6 +28,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
+                .antMatchers("/api/**")
+                .hasRole(ApplicationUserRole.Wolf.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,12 +46,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles(ApplicationUserRole.Wolf.name())
                 .build();
 
+        UserDetails bardUser = User.builder()
+                .username("Jaskier")
+                .password(passwordEncoder.encode("Wine"))
+                .roles(ApplicationUserRole.Bard.name())
+                .build();
+
         UserDetails newbUser = User.builder()
                 .username("Ciri")
                 .password(passwordEncoder.encode("Portal"))
                 .roles(ApplicationUserRole.Newb.name())
                 .build();
 
-        return new InMemoryUserDetailsManager(adminUser, newbUser);
+        return new InMemoryUserDetailsManager(adminUser, bardUser, newbUser);
     }
 }
