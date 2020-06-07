@@ -20,16 +20,19 @@ public class UnitManagementController {
 
     @PostMapping
     public void recruitNewUnit(@RequestBody Unit unit) {
+        System.out.println("Recruited unit:");
         System.out.println(unit);
     }
 
     @DeleteMapping(path = "{unitId}")
     public void deleteUnit(@PathVariable("unitId") Integer unitId) {
+        System.out.println("Sold unit:");
         System.out.println(unitId);
     }
 
     @PutMapping(path = "{unitId}")
-    public void updateUnit(@PathVariable("{unitId}") Integer unitId, @RequestBody Unit unit) {
+    public void updateUnit(@PathVariable("unitId") Integer unitId, @RequestBody Unit unit) {
+        System.out.println("Updated unit:");
         System.out.println(String.format("%s, %s", unitId, unit));
     }
 }
