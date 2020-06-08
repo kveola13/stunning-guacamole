@@ -16,4 +16,12 @@ public class Unit {
     public String getUnitName() {
         return unitName;
     }
+
+    @Override
+    public String toString() {
+        return "Unit{" +
+                "unitId=" + unitId +
+                ", unitName='" + unitName + '\'' +
+                '}';
+    }
 }
