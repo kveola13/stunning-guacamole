@@ -15,6 +15,7 @@ public class UnitManagementController {
 
     @GetMapping
     public List<Unit> getAllUnits() {
+        System.out.println("Getting all units");
         return UNITS;
     }
 
