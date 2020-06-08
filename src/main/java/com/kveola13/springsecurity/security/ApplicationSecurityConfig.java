@@ -3,6 +3,7 @@ package com.kveola13.springsecurity.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import static com.kveola13.springsecurity.security.ApplicationUserPermission.*;
+import static com.kveola13.springsecurity.security.ApplicationUserRole.*;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +37,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
                 .antMatchers("/api/**")
-                .hasRole(ApplicationUserRole.Wolf.name())
+                .hasRole(Wolf.name())
+                .antMatchers(DELETE, "management/api/**")
+                .hasAuthority(STATS_WRITE.name())
+                .antMatchers(POST, "management/api/**")
+                .hasAuthority(STATS_WRITE.name())
+                .antMatchers(PUT, "management/api/**")
+                .hasAuthority(STATS_WRITE.name())
+                .antMatchers(GET, "/management/api/**").hasAnyRole(Wolf.name(), Bard.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -46,19 +58,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .builder()
                 .username("Geralt")
                 .password(passwordEncoder.encode("Rivia"))
-                .roles(ApplicationUserRole.Wolf.name())
+                .roles(Wolf.name())
                 .build();
 
         UserDetails bardUser = User.builder()
                 .username("Jaskier")
                 .password(passwordEncoder.encode("Wine"))
-                .roles(ApplicationUserRole.Bard.name())
+                .roles(Bard.name())
                 .build();
 
         UserDetails newbUser = User.builder()
                 .username("Ciri")
                 .password(passwordEncoder.encode("Portal"))
-                .roles(ApplicationUserRole.Newb.name())
+                .roles(Newb.name())
                 .build();
 
         return new InMemoryUserDetailsManager(adminUser, bardUser, newbUser);
