@@ -30,16 +30,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
-
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
                 .antMatchers("/api/**")
-                .hasRole(Newb.name())
+                .hasRole(Wolf.name())
                 .anyRequest()
                 .authenticated()
                 .and()
