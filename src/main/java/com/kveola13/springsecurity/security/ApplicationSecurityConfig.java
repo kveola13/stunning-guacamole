@@ -31,21 +31,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .disable()
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
                 .antMatchers("/api/**")
-                .hasRole(Wolf.name())
-                .antMatchers(DELETE, "management/api/**")
-                .hasAuthority(STATS_WRITE.getPermission())
-                .antMatchers(POST, "management/api/**")
-                .hasAuthority(STATS_WRITE.getPermission())
-                .antMatchers(PUT, "management/api/**")
-                .hasAuthority(STATS_WRITE.getPermission())
-                .antMatchers(GET, "/management/api/**").hasAnyRole(Wolf.name(), Bard.name())
+                .hasRole(Newb.name())
                 .anyRequest()
                 .authenticated()
                 .and()
