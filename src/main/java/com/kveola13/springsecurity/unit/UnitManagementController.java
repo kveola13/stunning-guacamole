@@ -15,7 +15,7 @@ public class UnitManagementController {
             new Unit(3, "Assassin"));
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_WOLF', 'ROLE_BARD')")
+    //@PreAuthorize("hasAnyRole('ROLE_WOLF', 'ROLE_BARD')")
     public List<Unit> getAllUnits() {
         System.out.println("Getting all units");
         return UNITS;
