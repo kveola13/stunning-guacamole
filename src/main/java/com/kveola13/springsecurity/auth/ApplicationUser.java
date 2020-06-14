@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class ApplicationUser implements UserDetails {
-    private final List<GrantedAuthority> grantedAuthorities;
-    private final String password;
     private final String username;
+    private final String password;
+    private final List<GrantedAuthority> grantedAuthorities;
     private final boolean isAccountNonExpired;
     private final boolean isAccountNonLocked;
     private final boolean isCredentialsNonExpired;
