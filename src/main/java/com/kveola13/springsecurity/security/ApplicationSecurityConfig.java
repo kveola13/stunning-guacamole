@@ -80,7 +80,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //Comment this method out when actually running
-    @Override
+    /*@Override
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails adminUser = User
@@ -103,5 +103,5 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
 
         return new InMemoryUserDetailsManager(adminUser, bardUser, newbUser);
-    }
+    }*/
 }
