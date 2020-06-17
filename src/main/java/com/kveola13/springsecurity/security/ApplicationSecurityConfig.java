@@ -1,5 +1,6 @@
 package com.kveola13.springsecurity.security;
 
+import com.kveola13.springsecurity.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.kveola13.springsecurity.service.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
@@ -40,7 +42,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole(Wolf.name())
                 .anyRequest()
                 .authenticated();
-                //.and()
+        //.and()
                 /*.formLogin()
                 .loginPage("/login")
                 .permitAll()
