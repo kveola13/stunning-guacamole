@@ -1,5 +1,6 @@
 package com.kveola13.springsecurity.jwt;
 
+import com.google.common.base.Strings;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -13,6 +14,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-
+        String authorizationHeader = httpServletRequest.getHeader("Authorization");
+        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }
     }
 }
