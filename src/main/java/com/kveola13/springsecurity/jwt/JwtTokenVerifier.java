@@ -3,6 +3,7 @@ package com.kveola13.springsecurity.jwt;
 import com.google.common.base.Strings;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +31,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
+        String token = authorizationHeader.replace("Bearer", "");
         try {
-            String token = authorizationHeader.replace("Bearer", "");
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor("secureandlongstringforyourentertainment".getBytes()))
                     .parseClaimsJws(token);
 
@@ -49,6 +50,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                     simpleGrantedAuthorities
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (JwtException jwtException) {
+            throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
         }
     }
 }
