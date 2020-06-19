@@ -5,6 +5,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
     @Override
@@ -27,7 +32,18 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor("secureandlongstringforyourentertainment".getBytes()))
                     .parseClaimsJws(token);
 
-            claimsJws.getBody();
+            Claims body = claimsJws.getBody();
+            String username = body.getSubject();
+            var authorities = (List<Map<String, String>>) body.get("authorities");
+
+
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    username,
+                    null,
+                    authorities
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
     }
 }
