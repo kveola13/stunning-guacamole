@@ -1,6 +1,11 @@
 package com.kveola13.springsecurity.jwt;
 
+import com.google.common.net.HttpHeaders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+import javax.crypto.SecretKey;
 
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
@@ -33,5 +38,9 @@ public class JwtConfig {
 
     public void setTokenExpirationAfterDays(Integer tokenExpirationAfterDays) {
         this.tokenExpirationAfterDays = tokenExpirationAfterDays;
+    }
+
+    public String getAuthorizationHeader() {
+        return HttpHeaders.AUTHORIZATION;
     }
 }
