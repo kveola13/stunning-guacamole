@@ -1,5 +1,6 @@
 package com.kveola13.springsecurity.security;
 
+import com.kveola13.springsecurity.jwt.JwtTokenVerifier;
 import com.kveola13.springsecurity.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.kveola13.springsecurity.service.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.concurrent.TimeUnit;
 
 import static com.kveola13.springsecurity.security.ApplicationUserRole.*;
 
@@ -39,6 +39,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
