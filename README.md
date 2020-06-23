@@ -1,4 +1,4 @@
-# stunning-guacamole
+# Java : stunning-guacamole
 
 Java project with Spring.
 
